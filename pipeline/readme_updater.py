@@ -20,7 +20,7 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-README_PATH = Path(__file__).parent.parent / "README.md"
+README_PATH = Path(__file__).parent.parent / "README_dataset.md"
 
 
 def load_readme(path: Path = README_PATH) -> str:
