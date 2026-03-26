@@ -6,7 +6,7 @@
 # ============================================================
 
 dataset:
-  huggingface_repo: "hiyata/Virus-Host-Genomes-updates"  
+  huggingface_repo: "hiyata/Virus-Host-Genomes-updates-v2"  
   train_split_name: "train"
   test_split_name: "test"
   test_ratio: 0.10                                  # 10% of NEW sequences go to test
