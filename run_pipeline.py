@@ -145,6 +145,24 @@ def run(args) -> None:
         f"({len(new_train)} train, {len(new_test)} test)"
     )
 
+    # ---- Step 6b: Compute per-run breakdown stats --------------------------
+    from collections import Counter
+    breakdown = {
+        "by_family":        dict(Counter(r["family"] for r in new_rows if r["family"])),
+        "by_host":          dict(Counter(r["host"] for r in new_rows)),
+        "by_host_category": dict(Counter(r["host_category"] for r in new_rows)),
+        "labeling_tiers": {
+            "gemini_annotated": sum(1 for r in new_rows if r.get("gemini_annotated")),
+            "not_gemini":       sum(1 for r in new_rows if not r.get("gemini_annotated")),
+        },
+        "qc": {
+            "fetched":       qc_stats["total_input"],
+            "failed_title":  qc_stats["failed_title"],
+            "failed_seq":    qc_stats["failed_sequence"],
+            "passed":        qc_stats["passed"],
+        },
+    }
+
     # ---- Step 7: Push to HuggingFace ---------------------------------------
     if args.dry_run:
         logger.info("[DRY RUN] Skipping HuggingFace push.")
@@ -163,11 +181,21 @@ def run(args) -> None:
         test_added=len(new_test),
         bump_type=bump_type,
         note=args.note or "",
+        breakdown=breakdown,
     )
 
-    # ---- Step 9: Update README ---------------------------------------------
+    # ---- Step 9: Update local README ---------------------------------------
     readme_path = Path("README_dataset.md")
-    update_readme(updated_state, path=readme_path)
+    update_readme(updated_state, breakdown=breakdown, path=readme_path)
+
+    # ---- Step 10: Push README to HuggingFace Hub ---------------------------
+    if not args.dry_run:
+        try:
+            from pipeline.readme_updater import push_readme_to_hub
+            push_readme_to_hub(readme_path, hf_repo, hf_token)
+        except Exception as e:
+            # Non-fatal — dataset data was already pushed successfully
+            logger.warning(f"README push to HuggingFace failed (non-fatal): {e}")
 
     # ---- Summary -----------------------------------------------------------
     logger.info("=" * 60)
@@ -177,6 +205,7 @@ def run(args) -> None:
     logger.info(f"  Dataset total:     {updated_state['total_sequences']:,}")
     logger.info(f"  Train / Test:      {updated_state['train_sequences']:,} / {updated_state['test_sequences']:,}")
     logger.info(f"  QC rejected:       {qc_stats['failed_title'] + qc_stats['failed_sequence']:,}")
+    logger.info(f"  Human / Non-human: {breakdown['by_host'].get('human', 0):,} / {breakdown['by_host'].get('non-human', 0):,}")
     logger.info("=" * 60)
 
     # Write a machine-readable run summary (useful for GitHub Actions job summary)
@@ -186,6 +215,7 @@ def run(args) -> None:
         "sequences_added": len(new_rows),
         "total_sequences": updated_state["total_sequences"],
         "qc_rejected": qc_stats["failed_title"] + qc_stats["failed_sequence"],
+        "breakdown": breakdown,
         "dry_run": args.dry_run,
     }
     with open("run_summary.json", "w") as f:

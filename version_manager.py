@@ -93,6 +93,7 @@ def record_run(
     test_added: int,
     bump_type: str = "build",
     note: str = "",
+    breakdown: dict = None,
 ) -> dict:
     """
     Update pipeline_state.json after a successful pipeline run.
@@ -120,9 +121,12 @@ def record_run(
         "train_added": train_added,
         "test_added": test_added,
         "bump_type": bump_type,
+        "total_after": state["total_sequences"],
     }
     if note:
         run_record["note"] = note
+    if breakdown:
+        run_record["breakdown"] = breakdown
 
     state["run_history"].append(run_record)
     save_state(state)
