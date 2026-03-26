@@ -1,0 +1,76 @@
+# ============================================================
+# Virus-Host-Genomes Pipeline Configuration
+# ============================================================
+# Edit this file to change which families are tracked,
+# quality thresholds, or API settings.
+# ============================================================
+
+dataset:
+  huggingface_repo: "hiyata/Virus-Host-Genomes-updates"  
+  train_split_name: "train"
+  test_split_name: "test"
+  test_ratio: 0.10                                  # 10% of NEW sequences go to test
+
+ncbi:
+  email: "your@email.com"                          
+  api_key_env: "NCBI_API_KEY"                      
+  batch_size: 500                                   
+  request_delay: 0.34                               
+  max_records_per_run: 10000                        
+
+  # The 15 virus families tracked in the dataset.
+  target_families:
+    - "Adenoviridae"
+    - "Anelloviridae"
+    - "Coronaviridae"
+    - "Filoviridae"
+    - "Flaviviridae"
+    - "Orthoherpesviridae"
+    - "Papillomaviridae"
+    - "Paramyxoviridae"
+    - "Parvoviridae"
+    - "Picornaviridae"
+    - "Polyomaviridae"
+    - "Poxviridae"
+    - "Retroviridae"
+    - "Rhabdoviridae"
+    - "Togaviridae"
+
+quality_filter:
+  # Sequences containing these terms are excluded (case-insensitive)
+  exclude_title_terms:
+    - "partial"
+    - "mutant"
+    - "unverified"
+    - " bac "
+    - "clone"
+    - ", gene"
+    - "gene sequence"
+  # Only allow standard IUPAC nucleotides
+  allowed_nucleotides: "ACGT"
+  min_length: 1000        # Minimum genome length in bp
+  max_ambiguous_ratio: 0.0  # Fraction of ambiguous (non-ACGT) chars allowed
+
+host_labeling:
+  host_patterns_file: "config/host_patterns.yml"
+
+  # Tier 3: Gemini AI (used only when Tiers 1 & 2 fail)
+  gemini:
+    enabled: true
+    api_key_env: "GEMINI_API_KEY"
+    model: "gemini-1.5-flash"
+    # Sequences per batch sent to Gemini (cost control)
+    batch_size: 50
+    # If Gemini is unavailable, label as "unresolved" rather than crashing
+    fallback_on_error: true
+
+versioning:
+  # BUILD    → routine monthly sequence addition (default — data grew, nothing else changed)
+  # REVISION → processing methodology changed (--bump revision for running manually)
+  # SCHEMA   → structural change 
+  default_bump: "build"
+
+logging:
+  level: "INFO"
+  save_run_log: true
+  log_dir: "logs"

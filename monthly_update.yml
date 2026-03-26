@@ -1,0 +1,131 @@
+name: Monthly Dataset Update
+
+# ---------------------------------------------------------------
+# Trigger:
+#   1. Scheduled: 1st of every month at 02:00 UTC
+#   2. Manual
+#      (allows dry-run, custom since-date, and forced version bump)
+# ---------------------------------------------------------------
+on:
+  schedule:
+    - cron: "0 2 1 * *"   # 02:00 UTC on the 1st of every month
+
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (fetch + process, but do NOT push to HuggingFace)"
+        type: boolean
+        default: false
+      since_date:
+        description: "Override since-date for NCBI query (YYYY-MM-DD). Leave blank to use state."
+        type: string
+        default: ""
+      bump_type:
+        description: "Version bump type (schema changes must use migrate_schema.py locally)"
+        type: choice
+        options:
+          - build
+          - revision
+        default: build
+      note:
+        description: "Optional note for this version in the run history"
+        type: string
+        default: ""
+
+jobs:
+  update-dataset:
+    name: Fetch, Process & Push
+    runs-on: ubuntu-latest
+    timeout-minutes: 300   # 5 hours — genomics pipelines can be slow
+
+    permissions:
+      contents: write      # Needed to commit state + README back to the repo
+
+    steps:
+      # ---- Checkout ---------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ---- Python setup -----------------------------------------------------
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # ---- Run pipeline -----------------------------------------------------
+      - name: Run pipeline
+        env:
+          HF_TOKEN:       ${{ secrets.HF_TOKEN }}
+          NCBI_API_KEY:   ${{ secrets.NCBI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          ARGS=""
+
+          # Dry run flag
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          # Since-date override
+          if [ -n "${{ github.event.inputs.since_date }}" ]; then
+            ARGS="$ARGS --since ${{ github.event.inputs.since_date }}"
+          fi
+
+          # Version bump type (manual runs only)
+          if [ -n "${{ github.event.inputs.bump_type }}" ]; then
+            ARGS="$ARGS --bump ${{ github.event.inputs.bump_type }}"
+          fi
+
+          # Note
+          if [ -n "${{ github.event.inputs.note }}" ]; then
+            ARGS="$ARGS --note \"${{ github.event.inputs.note }}\""
+          fi
+
+          python run_pipeline.py $ARGS
+
+      # ---- Write GitHub Actions job summary ---------------------------------
+      - name: Post run summary
+        if: always()
+        run: |
+          if [ -f run_summary.json ]; then
+            echo "## Pipeline Run Summary" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            cat run_summary.json >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+      # ---- Commit state + README back to the repo ---------------------------
+      # This only commits if there are actual changes (i.e., new sequences were added).
+      - name: Commit updated state and README
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add state/pipeline_state.json README_dataset.md run_summary.json
+
+          # Only commit if there are staged changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            VERSION=$(python -c "import json; print(json.load(open('state/pipeline_state.json'))['version'])")
+            git commit -m "chore: monthly update v${VERSION} [skip ci]"
+            git push
+            echo "Committed v${VERSION} state update."
+          fi
+
+      # ---- Upload log as artifact -------------------------------------------
+      - name: Upload run log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-log-${{ github.run_id }}
+          path: logs/
+          retention-days: 90
+          if-no-files-found: ignore

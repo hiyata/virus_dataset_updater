@@ -1,0 +1,175 @@
+# Host patterns for virus metadata processing
+
+# Host patterns with [regex, standardized_name] format
+host_patterns:
+  human:
+    - ["\\bhomo sapiens\\b", "Homo sapiens"]
+    - ["\\bhuman\\b", "Homo sapiens"]
+    - ["\\bh\\. sapiens\\b", "Homo sapiens"]
+    - ["\\bman\\b", "Homo sapiens"]
+    - ["\\bwoman\\b", "Homo sapiens"]
+    - ["\\bchild\\b", "Homo sapiens"]
+    - ["\\bpatient\\b", "Homo sapiens"]
+  
+  avian:
+    - ["\\bgallus\\b", "Gallus gallus"]
+    - ["\\bchicken\\b", "Gallus gallus"]
+    - ["\\bduck\\b", "Anatidae"]
+    - ["\\bgoose\\b", "Anatidae"]
+    - ["\\bturkey\\b", "Meleagris"]
+    - ["\\bavian\\b", "Aves"]
+    - ["\\bbird\\b", "Aves"]
+  
+  rodent:
+    - ["\\bmouse\\b", "Mus musculus"]
+    - ["\\brat\\b", "Rattus"]
+    - ["\\bhamster\\b", "Cricetinae"]
+    - ["\\bgerbil\\b", "Gerbillinae"]
+    - ["\\bguinea pig\\b", "Cavia porcellus"]
+    - ["\\brodent\\b", "Rodentia"]
+  
+  primate:
+    - ["\\bmonkey\\b", "Primates"]
+    - ["\\bmacaque\\b", "Macaca"]
+    - ["\\bchimpanzee\\b", "Pan troglodytes"]
+    - ["\\bgorilla\\b", "Gorilla"]
+    - ["\\bbaboon\\b", "Papio"]
+    - ["\\bprimate\\b", "Primates"]
+  
+  insect:
+    - ["\\bmosquito\\b", "Culicidae"]
+    - ["\\baedes\\b", "Aedes"]
+    - ["\\banopheles\\b", "Anopheles"]
+    - ["\\btick\\b", "Ixodidae"]
+    - ["\\bfly\\b", "Diptera"]
+    - ["\\binsect\\b", "Insecta"]
+    - ["\\bculex\\b", "Culex"]
+  
+  livestock:
+    - ["\\bpig\\b", "Sus scrofa"]
+    - ["\\bhog\\b", "Sus scrofa"]
+    - ["\\bswine\\b", "Sus scrofa"]
+    - ["\\bcattle\\b", "Bos taurus"]
+    - ["\\bcow\\b", "Bos taurus"]
+    - ["\\bhorse\\b", "Equus caballus"]
+    - ["\\bsheep\\b", "Ovis aries"]
+    - ["\\bgoat\\b", "Capra aegagrus"]
+    - ["\\bbovine\\b", "Bovinae"]
+    - ["\\bcamel\\b", "Camelidae"]
+  
+  companion:
+    - ["\\bdog\\b", "Canis lupus familiaris"]
+    - ["\\bcanine\\b", "Canidae"]
+    - ["\\bcat\\b", "Felis catus"]
+    - ["\\bfeline\\b", "Felidae"]
+    - ["\\bferret\\b", "Mustela putorius furo"]
+  
+  bat:
+    - ["\\bbat\\b", "Chiroptera"]
+    - ["\\bpteropus\\b", "Pteropus"]
+    - ["\\brousettus\\b", "Rousettus"]
+  
+  marine:
+    - ["\\bfish\\b", "Pisces"]
+    - ["\\bshrimp\\b", "Penaeidae"]
+    - ["\\blobster\\b", "Nephropidae"]
+    - ["\\bcrab\\b", "Brachyura"]
+    - ["\\bshellfish\\b", "Crustacea"]
+    - ["\\bdolphin\\b", "Delphinidae"]
+    - ["\\bwhale\\b", "Cetacea"]
+    - ["\\bseal\\b", "Phocidae"]
+    - ["\\bmarine\\b", "Marine animal"]
+
+# Category mapping for standardized hosts
+category_mapping:
+  "Homo sapiens": "Mammal"
+  "Gallus gallus": "Avian"
+  "Anatidae": "Avian"
+  "Meleagris": "Avian"
+  "Aves": "Avian"
+  "Mus musculus": "Mammal"
+  "Rattus": "Mammal"
+  "Cricetinae": "Mammal"
+  "Gerbillinae": "Mammal"
+  "Cavia porcellus": "Mammal"
+  "Rodentia": "Mammal"
+  "Primates": "Mammal"
+  "Macaca": "Mammal"
+  "Pan troglodytes": "Mammal"
+  "Gorilla": "Mammal"
+  "Papio": "Mammal"
+  "Culicidae": "Insect"
+  "Aedes": "Insect"
+  "Anopheles": "Insect"
+  "Ixodidae": "Insect"
+  "Diptera": "Insect"
+  "Insecta": "Insect"
+  "Culex": "Insect"
+  "Sus scrofa": "Mammal"
+  "Bos taurus": "Mammal"
+  "Equus caballus": "Mammal"
+  "Ovis aries": "Mammal"
+  "Capra aegagrus": "Mammal"
+  "Bovinae": "Mammal"
+  "Camelidae": "Mammal"
+  "Canis lupus familiaris": "Mammal"
+  "Canidae": "Mammal"
+  "Felis catus": "Mammal"
+  "Felidae": "Mammal"
+  "Mustela putorius furo": "Mammal"
+  "Chiroptera": "Mammal"
+  "Pteropus": "Mammal"
+  "Rousettus": "Mammal"
+  "Pisces": "Fish"
+  "Penaeidae": "Crustacean"
+  "Nephropidae": "Crustacean"
+  "Brachyura": "Crustacean"
+  "Crustacea": "Crustacean"
+  "Delphinidae": "Mammal"
+  "Cetacea": "Mammal"
+  "Phocidae": "Mammal"
+  "Marine animal": "Other"
+  "Unknown": "Unknown"
+
+# Host mapping for non-standardized names
+host_mapping:
+  "unknown": "Unknown"
+  "NA": "Unknown"
+  "": "Unknown"
+
+# Virus patterns with regex patterns and processors
+virus_patterns:
+  - pattern: "influenza.*?(H[1-9]N[1-9]|A|B|C)(?:.*?([A-Za-z]+))?"
+    processor: "process_influenza_pattern"
+  - pattern: "dengue.*?(type|serotype)?\\s*([1-4])"
+    processor: "process_dengue_pattern"
+
+# Keywords for dengue identification
+dengue_keywords:
+  - "dengue"
+  - "DENV"
+  - "DEN-[1-4]"
+  - "dengue [1-4]"
+
+# Known zoonotic viruses
+known_zoonotic_viruses:
+  - "influenza"
+  - "rabies"
+  - "nipah"
+  - "hendra"
+  - "ebola"
+  - "marburg"
+  - "lassa"
+  - "hantavirus"
+  - "west nile"
+  - "zika"
+  - "dengue"
+  - "yellow fever"
+  - "japanese encephalitis"
+  - "tick-borne encephalitis"
+  - "rift valley fever"
+  - "crimean-congo hemorrhagic fever"
+  - "sars"
+  - "mers"
+  - "covid"
+  - "coronavirus"

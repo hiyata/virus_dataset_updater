@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "last_update_date": "2026-03-02",
+  "total_sequences": 58046,
+  "train_sequences": 51935,
+  "test_sequences": 6111,
+  "last_run_added": 0,
+  "run_history": [
+    {
+      "date": "2026-03-02",
+      "version": "1.0.0",
+      "sequences_added": 0,
+      "bump_type": "major",
+      "note": "Initial dataset"
+    }
+  ]
+}
