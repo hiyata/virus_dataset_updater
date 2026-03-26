@@ -71,89 +71,99 @@ def patch_splits_table(content: str, train_count: int, test_count: int) -> str:
 
 def build_latest_update_section(latest_run: dict, total_sequences: int) -> str:
     """
-    Build a detailed breakdown of the most recent pipeline run.
-    Placed near the top of the README so it's the first thing readers see.
+    Compact per-run summary. One header line, one stats line, one family table.
+    No stacked tables, no category breakdown walls.
     """
-    added      = latest_run.get("sequences_added", 0)
-    version    = latest_run.get("version", "—")
-    run_date   = latest_run.get("date", "—")
-    note       = latest_run.get("note", "")
-    breakdown  = latest_run.get("breakdown", {})
+    added     = latest_run.get("sequences_added", 0)
+    version   = latest_run.get("version", "—")
+    run_date  = latest_run.get("date", "—")
+    note      = latest_run.get("note", "")
+    breakdown = latest_run.get("breakdown", {})
 
-    by_host     = breakdown.get("by_host", {})
-    by_category = breakdown.get("by_host_category", {})
-    by_family   = breakdown.get("by_family", {})
-    qc          = breakdown.get("qc", {})
-    tiers       = breakdown.get("labeling_tiers", {})
+    by_host  = breakdown.get("by_host", {})
+    by_family = breakdown.get("by_family", {})
+    qc        = breakdown.get("qc", {})
+    tiers     = breakdown.get("labeling_tiers", {})
 
-    human     = by_host.get("human", 0)
-    nonhuman  = by_host.get("non-human", 0)
-    pct_human = f"{human / added * 100:.1f}%" if added else "—"
+    human    = by_host.get("human", 0)
+    nonhuman = by_host.get("non-human", 0)
+    pct      = f"{human / added * 100:.0f}%" if added else "—"
 
-    lines = [
-        LATEST_UPDATE_MARKER,
-        "",
-        f"**v{version}** — {run_date}" + (f" — {note}" if note else ""),
-        "",
-        f"**{added:,} sequences added** ({total_sequences:,} total)",
-        "",
-        "| | Count |",
-        "|---|---|",
-        f"| Human | {human:,} ({pct_human}) |",
-        f"| Non-human | {nonhuman:,} |",
-    ]
+    # ---- Header line --------------------------------------------------------
+    header = f"**Latest Update — v{version} · {run_date}**"
+    if note:
+        header += f" · {note}"
 
-    # Host category breakdown (skip if empty or only Unknown)
-    cat_rows = [(k, v) for k, v in sorted(by_category.items(), key=lambda x: -x[1]) if k != "Unknown"]
-    if cat_rows:
-        lines += ["", "**Host categories:**", ""]
-        lines += ["| Category | Added |", "|----------|-------|"]
-        for cat, count in cat_rows:
-            lines.append(f"| {cat} | {count:,} |")
+    # ---- Single stats line --------------------------------------------------
+    fetched  = qc.get("fetched", 0)
+    rejected = qc.get("failed_title", 0) + qc.get("failed_seq", 0)
+    gemini   = tiers.get("gemini_annotated", 0)
 
-    # Family breakdown
-    family_rows = sorted(by_family.items(), key=lambda x: -x[1])
-    if family_rows:
-        lines += ["", "**By virus family:**", ""]
-        lines += ["| Family | Added |", "|--------|-------|"]
-        for fam, count in family_rows:
-            lines.append(f"| {fam} | {count:,} |")
+    stats_parts = [f"**+{added:,} sequences** ({total_sequences:,} total)"]
+    if added:
+        stats_parts.append(f"{human:,} human ({pct}) · {nonhuman:,} non-human")
+    if fetched:
+        stats_parts.append(f"{fetched:,} fetched · {rejected:,} QC rejected")
+    if gemini:
+        stats_parts.append(f"{gemini:,} Gemini-annotated")
+    stats_line = " · ".join(stats_parts)
 
-    # QC and labeling
-    if qc:
-        fetched  = qc.get("fetched", 0)
-        rejected = qc.get("failed_title", 0) + qc.get("failed_seq", 0)
-        gemini   = tiers.get("gemini_annotated", 0)
-        lines += [
-            "",
-            f"**Quality control:** {fetched:,} fetched from NCBI, "
-            f"{rejected:,} rejected by QC filters, {added:,} passed.",
+    # ---- Compact two-column family table ------------------------------------
+    family_lines = []
+    if by_family:
+        rows = sorted(by_family.items(), key=lambda x: -x[1])
+        # Pair up into two columns
+        pairs = []
+        for i in range(0, len(rows), 2):
+            left = rows[i]
+            right = rows[i + 1] if i + 1 < len(rows) else ("", "")
+            pairs.append((left, right))
+
+        family_lines = [
+            "| Family | Added | Family | Added |",
+            "|--------|------:|--------|------:|",
         ]
-        if gemini:
-            lines.append(f"**Host labeling:** {gemini:,} sequences required Gemini (Tier 3) annotation.")
+        for (lf, lc), (rf, rc) in pairs:
+            right_str = f"{rf} | {rc:,}" if rf else " | "
+            family_lines.append(f"| {lf} | {lc:,} | {right_str} |")
 
+    lines = [LATEST_UPDATE_MARKER, ""]
+    lines.append(header)
+    lines.append("")
+    lines.append(stats_line)
+    if family_lines:
+        lines.append("")
+        lines += family_lines
     lines.append("")
     return "\n".join(lines)
 
 
 def patch_latest_update(content: str, latest_run: dict, total_sequences: int) -> str:
-    """Replace or insert the Latest Update section just before Dataset Summary."""
+    """
+    Replace or insert the Latest Update section.
+    Placement priority:
+      1. Replace existing ## Latest Update section if present
+      2. Insert after the closing ``` of the citation block
+      3. Insert before ## Dataset Summary as fallback
+    """
     new_section = build_latest_update_section(latest_run, total_sequences)
 
     if LATEST_UPDATE_MARKER in content:
-        # Replace existing section up to the next ## heading
         pattern = r"## Latest Update.*?(?=\n## )"
-        updated = re.sub(pattern, new_section.rstrip(), content, flags=re.DOTALL)
-    else:
-        # Insert before "## Dataset Summary" (or before the first ## if not found)
-        insert_before = "## Dataset Summary"
-        if insert_before in content:
-            updated = content.replace(insert_before, new_section + "\n---\n\n" + insert_before, 1)
-        else:
-            # Fallback: insert after the YAML front matter block
-            updated = re.sub(r"(---\n)", r"\1\n" + new_section + "\n---\n\n", content, count=1)
+        return re.sub(pattern, new_section.rstrip(), content, flags=re.DOTALL)
 
-    return updated
+    # Insert after citation code block (ends with ```)
+    # The citation block is the last ``` before ## Dataset Summary
+    cite_end = r"(```\n)(\n*## Dataset Summary)"
+    if re.search(cite_end, content):
+        return re.sub(cite_end, rf"\1\n{new_section}\n\2", content, count=1)
+
+    # Fallback: before Dataset Summary
+    if "## Dataset Summary" in content:
+        return content.replace("## Dataset Summary",
+                               new_section + "\n---\n\n## Dataset Summary", 1)
+
+    return content.rstrip() + "\n\n" + new_section
 
 
 # ---------------------------------------------------------------------------
