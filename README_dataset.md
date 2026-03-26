@@ -16,9 +16,10 @@ size_categories:
 
 ## Dataset Summary
 
-Virus-Host-Genomes is a comprehensive collection of viral genomic sequences paired with host information, containing 58,519 viral sequences. The dataset includes metadata such as viral taxonomy (family, genus), host information, geographic data, isolation sources, and various annotations including zoonotic potential indicators. This dataset was put together to support investigations into genetic determinants of host specificity, zoonotic potential, and genome-based classification models.
+Virus-Host-Genomes is a comprehensive collection of viral genomic sequences paired with host information, containing 58,046 viral sequences. The dataset includes metadata such as viral taxonomy (family, genus), host information, geographic data, isolation sources, and various annotations including zoonotic potential indicators. This dataset was put together to support investigations into genetic determinants of host specificity, zoonotic potential, and genome-based classification models.
 
-**Last Updated:** 2026-03-26. The latest version is always available here on Hugging Face.
+**Last Updated:** March 2, 2026
+This dataset is actively maintained and will continue to be updated. The latest version is always available here on Hugging Face.
 
 ## Citation Information
 
@@ -87,8 +88,8 @@ The dataset contains the following fields:
 The dataset contains train and test splits:
 | Split Name | Number of Instances |
 |------------|---------------------|
-| train | 52,361 |
-| test | 6,158 |
+| train | 51,935 |
+| test | 6,111 |
 
 ## Dataset Creation
 ### Source Data
@@ -279,10 +280,3 @@ print("Classification Report:\n", report)
 mcc = matthews_corrcoef(y_true, y_preds)
 print(f"Matthews Correlation Coefficient (MCC): {mcc:.4f}")
 ```
-
-## Update History
-
-| Date | Version | Sequences Added | Total | Note |
-|------|---------|----------------|-------|------|
-| 2026-03-26 | v1.0.1 | +473 | — |  |
-| 2026-03-02 | v1.0.0 | +0 | — | Initial dataset |
