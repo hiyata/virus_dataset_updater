@@ -48,7 +48,7 @@ def fetch_accession_ids(
         Entrez.api_key = api_key
 
     logger.info("Running NCBI esearch...")
-    handle = Entrez.esearch(db="nuccore", term=query, retmax=max_records, usehistory="y")
+    handle = Entrez.esearch(db="nucleotide", term=query, retmax=max_records, usehistory="y")
     record = Entrez.read(handle)
     handle.close()
 
@@ -81,7 +81,7 @@ def fetch_sequences_by_ids(
 
         try:
             handle = Entrez.efetch(
-                db="nuccore",
+                db="nucleotide",
                 id=",".join(batch_ids),
                 rettype="gb",
                 retmode="text",
