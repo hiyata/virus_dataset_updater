@@ -21,20 +21,21 @@ ncbi:
   # The 15 virus families tracked in the dataset.
   target_families:
     - "Adenoviridae"
-    - "Anelloviridae"
-    - "Coronaviridae"
-    - "Filoviridae"
-    - "Flaviviridae"
     - "Orthoherpesviridae"
     - "Papillomaviridae"
-    - "Paramyxoviridae"
-    - "Parvoviridae"
-    - "Picornaviridae"
     - "Polyomaviridae"
     - "Poxviridae"
-    - "Retroviridae"
-    - "Rhabdoviridae"
+    - "Parvoviridae"
+    - "Sedoreoviridae"
+    - "Spinareoviridae"
+    - "Astroviridae"
+    - "Flaviviridae"
+    - "Picornaviridae"
     - "Togaviridae"
+    - "Orthomyxoviridae"
+    - "Rhabdoviridae"
+    - "Hepadnaviridae"
+
 
 quality_filter:
   # Sequences containing these terms are excluded (case-insensitive)
