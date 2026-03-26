@@ -14,12 +14,26 @@ size_categories:
 ---
 # Virus-Host-Genomes Dataset
 
+## Latest Update
+
+**Latest Update — v1.0.1 · 2026-03-26**
+
+**+150 sequences** (58,196 total) · 89 human (59%) · 61 non-human · 198 fetched · 48 QC rejected
+
+| Family | Added | Family | Added |
+|--------|------:|--------|------:|
+| Adenoviridae | 59 | Picornaviridae | 34 |
+| Flaviviridae | 21 | Parvoviridae | 19 |
+| Astroviridae | 12 | Togaviridae | 2 |
+| Rhabdoviridae | 2 | Poxviridae | 1 |
+
+---
+
 ## Dataset Summary
 
-Virus-Host-Genomes is a comprehensive collection of viral genomic sequences paired with host information, containing 58,046 viral sequences. The dataset includes metadata such as viral taxonomy (family, genus), host information, geographic data, isolation sources, and various annotations including zoonotic potential indicators. This dataset was put together to support investigations into genetic determinants of host specificity, zoonotic potential, and genome-based classification models.
+Virus-Host-Genomes is a comprehensive collection of viral genomic sequences paired with host information, containing 58,196 viral sequences. The dataset includes metadata such as viral taxonomy (family, genus), host information, geographic data, isolation sources, and various annotations including zoonotic potential indicators. This dataset was put together to support investigations into genetic determinants of host specificity, zoonotic potential, and genome-based classification models.
 
-**Last Updated:** March 2, 2026
-This dataset is actively maintained and will continue to be updated. The latest version is always available here on Hugging Face.
+**Last Updated:** 2026-03-26. The latest version is always available here on Hugging Face.
 
 ## Citation Information
 
@@ -88,8 +102,8 @@ The dataset contains the following fields:
 The dataset contains train and test splits:
 | Split Name | Number of Instances |
 |------------|---------------------|
-| train | 51,935 |
-| test | 6,111 |
+| train | 52,071 |
+| test | 6,125 |
 
 ## Dataset Creation
 ### Source Data
@@ -280,3 +294,10 @@ print("Classification Report:\n", report)
 mcc = matthews_corrcoef(y_true, y_preds)
 print(f"Matthews Correlation Coefficient (MCC): {mcc:.4f}")
 ```
+
+## Update History
+
+| Date | Version | Added | Total | Human | Non-human | Note |
+|------|---------|-------|-------|-------|-----------|------|
+| 2026-03-26 | v1.0.1 | +150 | 58,196 | 89 | 61 |  |
+| 2026-03-02 | v1.0.0 | +0 | — | — | — | Initial dataset release |
