@@ -4,5 +4,40 @@
   "sequences_added": 473,
   "total_sequences": 58519,
   "qc_rejected": 435,
+  "breakdown": {
+    "by_family": {
+      "Coronaviridae": 303,
+      "Paramyxoviridae": 13,
+      "Retroviridae": 13,
+      "Flaviviridae": 21,
+      "Picornaviridae": 34,
+      "Adenoviridae": 59,
+      "Poxviridae": 1,
+      "Togaviridae": 2,
+      "Parvoviridae": 19,
+      "Rhabdoviridae": 2,
+      "Anelloviridae": 6
+    },
+    "by_host": {
+      "human": 391,
+      "non-human": 82
+    },
+    "by_host_category": {
+      "Mammal": 405,
+      "Avian": 38,
+      "Insect": 1,
+      "Unknown": 29
+    },
+    "labeling_tiers": {
+      "gemini_annotated": 0,
+      "not_gemini": 473
+    },
+    "qc": {
+      "fetched": 908,
+      "failed_title": 2,
+      "failed_seq": 433,
+      "passed": 473
+    }
+  },
   "dry_run": false
 }
