@@ -16,19 +16,22 @@ size_categories:
 
 ## Latest Update
 
-**Latest Update — v1.0.2 · 2026-04-01**
+**Latest Update — v1.0.3 · 2026-05-01**
 
-**+10 sequences** (58,206 total) · 5 human (50%) · 5 non-human · 11 fetched · 1 QC rejected
+**+97 sequences** (58,303 total) · 3 human (3%) · 94 non-human · 659 fetched · 562 QC rejected
 
 | Family | Added | Family | Added |
 |--------|------:|--------|------:|
-| Picornaviridae | 5 | Papillomaviridae | 2 |
-| Adenoviridae | 2 | Poxviridae | 1 |
+| Polyomaviridae | 52 | Rhabdoviridae | 13 |
+| Poxviridae | 11 | Picornaviridae | 6 |
+| Orthoherpesviridae | 4 | Flaviviridae | 3 |
+| Adenoviridae | 3 | Hepadnaviridae | 2 |
+| Papillomaviridae | 2 | Togaviridae | 1 |
 ## Dataset Summary
 
-Virus-Host-Genomes is a comprehensive collection of viral genomic sequences paired with host information, containing 58,206 viral sequences. The dataset includes metadata such as viral taxonomy (family, genus), host information, geographic data, isolation sources, and various annotations including zoonotic potential indicators. This dataset was put together to support investigations into genetic determinants of host specificity, zoonotic potential, and genome-based classification models.
+Virus-Host-Genomes is a comprehensive collection of viral genomic sequences paired with host information, containing 58,303 viral sequences. The dataset includes metadata such as viral taxonomy (family, genus), host information, geographic data, isolation sources, and various annotations including zoonotic potential indicators. This dataset was put together to support investigations into genetic determinants of host specificity, zoonotic potential, and genome-based classification models.
 
-**Last Updated:** 2026-04-01. The latest version is always available here on Hugging Face.
+**Last Updated:** 2026-05-01. The latest version is always available here on Hugging Face.
 
 ## Citation Information
 
@@ -97,8 +100,8 @@ The dataset contains the following fields:
 The dataset contains train and test splits:
 | Split Name | Number of Instances |
 |------------|---------------------|
-| train | 52,079 |
-| test | 6,127 |
+| train | 52,166 |
+| test | 6,137 |
 
 ## Dataset Creation
 ### Source Data
@@ -294,6 +297,7 @@ print(f"Matthews Correlation Coefficient (MCC): {mcc:.4f}")
 
 | Date | Version | Added | Total | Human | Non-human | Note |
 |------|---------|-------|-------|-------|-----------|------|
+| 2026-05-01 | v1.0.3 | +97 | 58,303 | 3 | 94 |  |
 | 2026-04-01 | v1.0.2 | +10 | 58,206 | 5 | 5 |  |
 | 2026-03-26 | v1.0.1 | +150 | 58,196 | 89 | 61 |  |
 | 2026-03-02 | v1.0.0 | +0 | — | — | — | Initial dataset release |
