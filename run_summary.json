@@ -1,41 +1,41 @@
 {
-  "version": "1.0.3",
-  "date": "2026-05-01",
-  "sequences_added": 97,
-  "total_sequences": 58303,
-  "qc_rejected": 562,
+  "version": "1.0.4",
+  "date": "2026-06-01",
+  "sequences_added": 145,
+  "total_sequences": 58448,
+  "qc_rejected": 96,
   "breakdown": {
     "by_family": {
-      "Hepadnaviridae": 2,
-      "Flaviviridae": 3,
-      "Adenoviridae": 3,
-      "Poxviridae": 11,
-      "Picornaviridae": 6,
-      "Orthoherpesviridae": 4,
-      "Rhabdoviridae": 13,
-      "Papillomaviridae": 2,
-      "Togaviridae": 1,
-      "Polyomaviridae": 52
+      "Picornaviridae": 26,
+      "Parvoviridae": 10,
+      "Adenoviridae": 10,
+      "Flaviviridae": 13,
+      "Rhabdoviridae": 46,
+      "Orthoherpesviridae": 1,
+      "Togaviridae": 27,
+      "Astroviridae": 1,
+      "Papillomaviridae": 7,
+      "Poxviridae": 4
     },
     "by_host": {
-      "non-human": 94,
-      "human": 3
+      "human": 69,
+      "non-human": 76
     },
     "by_host_category": {
-      "Avian": 7,
-      "Mammal": 12,
-      "Insect": 8,
-      "Unknown": 70
+      "Mammal": 97,
+      "Avian": 6,
+      "Insect": 4,
+      "Unknown": 38
     },
     "labeling_tiers": {
       "gemini_annotated": 0,
-      "not_gemini": 97
+      "not_gemini": 145
     },
     "qc": {
-      "fetched": 659,
-      "failed_title": 3,
-      "failed_seq": 559,
-      "passed": 97
+      "fetched": 241,
+      "failed_title": 2,
+      "failed_seq": 94,
+      "passed": 145
     }
   },
   "dry_run": false
