@@ -16,22 +16,21 @@ size_categories:
 
 ## Latest Update
 
-**Latest Update — v1.0.4 · 2026-06-01**
+**Latest Update — v1.0.5 · 2026-07-01**
 
-**+145 sequences** (58,448 total) · 69 human (48%) · 76 non-human · 241 fetched · 96 QC rejected
+**+303 sequences** (58,751 total) · 242 human (80%) · 61 non-human · 412 fetched · 109 QC rejected
 
 | Family | Added | Family | Added |
 |--------|------:|--------|------:|
-| Rhabdoviridae | 46 | Togaviridae | 27 |
-| Picornaviridae | 26 | Flaviviridae | 13 |
-| Parvoviridae | 10 | Adenoviridae | 10 |
-| Papillomaviridae | 7 | Poxviridae | 4 |
-| Orthoherpesviridae | 1 | Astroviridae | 1 |
+| Hepadnaviridae | 205 | Picornaviridae | 63 |
+| Parvoviridae | 11 | Astroviridae | 9 |
+| Togaviridae | 6 | Adenoviridae | 4 |
+| Flaviviridae | 3 | Polyomaviridae | 2 |
 ## Dataset Summary
 
-Virus-Host-Genomes is a comprehensive collection of viral genomic sequences paired with host information, containing 58,448 viral sequences. The dataset includes metadata such as viral taxonomy (family, genus), host information, geographic data, isolation sources, and various annotations including zoonotic potential indicators. This dataset was put together to support investigations into genetic determinants of host specificity, zoonotic potential, and genome-based classification models.
+Virus-Host-Genomes is a comprehensive collection of viral genomic sequences paired with host information, containing 58,751 viral sequences. The dataset includes metadata such as viral taxonomy (family, genus), host information, geographic data, isolation sources, and various annotations including zoonotic potential indicators. This dataset was put together to support investigations into genetic determinants of host specificity, zoonotic potential, and genome-based classification models.
 
-**Last Updated:** 2026-06-01. The latest version is always available here on Hugging Face.
+**Last Updated:** 2026-07-01. The latest version is always available here on Hugging Face.
 
 ## Citation Information
 
@@ -100,8 +99,8 @@ The dataset contains the following fields:
 The dataset contains train and test splits:
 | Split Name | Number of Instances |
 |------------|---------------------|
-| train | 52,298 |
-| test | 6,150 |
+| train | 52,571 |
+| test | 6,180 |
 
 ## Dataset Creation
 ### Source Data
@@ -297,6 +296,7 @@ print(f"Matthews Correlation Coefficient (MCC): {mcc:.4f}")
 
 | Date | Version | Added | Total | Human | Non-human | Note |
 |------|---------|-------|-------|-------|-----------|------|
+| 2026-07-01 | v1.0.5 | +303 | 58,751 | 242 | 61 |  |
 | 2026-06-01 | v1.0.4 | +145 | 58,448 | 69 | 76 |  |
 | 2026-05-01 | v1.0.3 | +97 | 58,303 | 3 | 94 |  |
 | 2026-04-01 | v1.0.2 | +10 | 58,206 | 5 | 5 |  |
