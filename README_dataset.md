@@ -16,23 +16,23 @@ size_categories:
 
 ## Latest Update
 
-**Latest Update — v1.0.6 · 2026-08-01**
+**Latest Update — v1.0.7 · 2026-09-01**
 
-**+277 sequences** (59,028 total) · 41 human (15%) · 236 non-human · 526 fetched · 249 QC rejected
+**+420 sequences** (59,448 total) · 352 human (84%) · 68 non-human · 779 fetched · 359 QC rejected
 
 | Family | Added | Family | Added |
 |--------|------:|--------|------:|
-| Rhabdoviridae | 102 | Hepadnaviridae | 48 |
-| Parvoviridae | 39 | Papillomaviridae | 29 |
-| Flaviviridae | 21 | Poxviridae | 12 |
-| Picornaviridae | 9 | Togaviridae | 8 |
-| Astroviridae | 5 | Adenoviridae | 3 |
-| Polyomaviridae | 1 |  |  |
+| Picornaviridae | 264 | Adenoviridae | 44 |
+| Hepadnaviridae | 25 | Poxviridae | 22 |
+| Polyomaviridae | 15 | Flaviviridae | 14 |
+| Togaviridae | 13 | Papillomaviridae | 7 |
+| Rhabdoviridae | 7 | Orthoherpesviridae | 5 |
+| Astroviridae | 3 | Parvoviridae | 1 |
 ## Dataset Summary
 
-Virus-Host-Genomes is a comprehensive collection of viral genomic sequences paired with host information, containing 59,028 viral sequences. The dataset includes metadata such as viral taxonomy (family, genus), host information, geographic data, isolation sources, and various annotations including zoonotic potential indicators. This dataset was put together to support investigations into genetic determinants of host specificity, zoonotic potential, and genome-based classification models.
+Virus-Host-Genomes is a comprehensive collection of viral genomic sequences paired with host information, containing 59,448 viral sequences. The dataset includes metadata such as viral taxonomy (family, genus), host information, geographic data, isolation sources, and various annotations including zoonotic potential indicators. This dataset was put together to support investigations into genetic determinants of host specificity, zoonotic potential, and genome-based classification models.
 
-**Last Updated:** 2026-08-01. The latest version is always available here on Hugging Face.
+**Last Updated:** 2026-09-01. The latest version is always available here on Hugging Face.
 
 ## Citation Information
 
@@ -101,8 +101,8 @@ The dataset contains the following fields:
 The dataset contains train and test splits:
 | Split Name | Number of Instances |
 |------------|---------------------|
-| train | 52,821 |
-| test | 6,207 |
+| train | 53,200 |
+| test | 6,248 |
 
 ## Dataset Creation
 ### Source Data
@@ -298,6 +298,7 @@ print(f"Matthews Correlation Coefficient (MCC): {mcc:.4f}")
 
 | Date | Version | Added | Total | Human | Non-human | Note |
 |------|---------|-------|-------|-------|-----------|------|
+| 2026-09-01 | v1.0.7 | +420 | 59,448 | 352 | 68 |  |
 | 2026-08-01 | v1.0.6 | +277 | 59,028 | 41 | 236 |  |
 | 2026-07-01 | v1.0.5 | +303 | 58,751 | 242 | 61 |  |
 | 2026-06-01 | v1.0.4 | +145 | 58,448 | 69 | 76 |  |
